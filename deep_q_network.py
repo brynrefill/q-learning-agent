@@ -3,6 +3,7 @@ Deep Q-Network (DQN) for CliffWalking environment
 """
 from collections import deque
 import gymnasium as gym
+import matplotlib.pyplot as plt
 import numpy as np
 import os
 import random
@@ -158,7 +159,7 @@ def test_agent(env):
     N_STATES = env.observation_space.n
     N_ACTIONS = env.action_space.n
 
-    print("Testing the agent...")
+    print(f"Testing the agent over {N_TEST_EPISODES} episodes...")
 
     # network
     is_trained = True
@@ -197,6 +198,8 @@ def test_agent(env):
 
 # train the agent with Deep Q-Network
 def q_learning(env):
+    global EXPL_RATE
+
     # environment
     # 4 * 12 possible tiles in the env grid
     N_STATES = env.observation_space.n
@@ -233,7 +236,7 @@ def q_learning(env):
 
             # do the action
             # in this env 'truncated' seems that is not used
-            next_state, reward, terminated, truncated, _ = env.step(action)
+            next_state, reward, terminated, _, _ = env.step(action)
 
             '''
             print(state)
@@ -280,7 +283,7 @@ def q_learning(env):
         # log progress every 50 episodes
         if (episode + 1) % 50 == 0:
             print(f"[{episode + 1}/{N_EPISODES}] "
-                    f"Avg steps: {avg_steps}, "
+                    f"avg steps: {avg_steps}, "
                     f"avg reward: {avg_reward:.2f}, "
                     f"epsilon: {EXPL_RATE:.3f}")
 
@@ -302,7 +305,7 @@ def main():
     if (to_train):
         env = gym.make('CliffWalking-v1', is_slippery=is_not_det)
         avg_ep_rewards, avg_ep_steps = q_learning(env)
-    
+
     # testing
     env = gym.make('CliffWalking-v1', is_slippery=is_not_det, render_mode="human")
     test_ep_rewards, test_avg_ep_rewards = test_agent(env)
