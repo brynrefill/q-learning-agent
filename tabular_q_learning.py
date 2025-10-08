@@ -189,24 +189,3 @@ def q_learning(env):
     print(f"Training completed in {training_duration:.2f} seconds!\n")
 
     return avg_ep_rewards, avg_ep_steps
-
-def main():
-    to_train = True
-    is_not_det = False
-
-    # training
-    ep_rewards = []
-    avg_ep_rewards = []
-
-    if (to_train):
-        env = gym.make('CliffWalking-v1', is_slippery=is_not_det)
-        avg_ep_rewards, avg_ep_steps = q_learning(env)
-
-    # testing
-    env = gym.make('CliffWalking-v1', is_slippery=is_not_det, render_mode="human")
-    test_ep_rewards, test_avg_ep_rewards = test_agent(env)
-
-    print("\nTabular Q-learning training and testing completed successfully!")
-
-if __name__ == "__main__":
-    main()
