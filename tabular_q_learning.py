@@ -17,19 +17,19 @@ random.seed(42)
 np.random.seed(42)
 
 # HYPERPARAMETERS -----------------------------
-N_EPISODES    = 500
+N_EPISODES      = 500 # if is_det else 1000
 N_TEST_EPISODES = 5
-MAX_N_STEPS   = 200
+MAX_N_STEPS     = 200 # if is_det else 500
 
 # alpha / step size
-LEARNING_RATE = 1.0 # if is_det else 0.1
+LEARNING_RATE = 1.0   # if is_det else 0.1
 
 # gamma
-DISC_FACTOR = 0.9
+DISC_FACTOR = 0.9     # if is_det else 0.95
 
 # epsilon
 EXPL_RATE_MAX = 1.0
-EXPL_RATE_MIN = 0.01
+EXPL_RATE_MIN = 0.01  # if is_det else 0.05
 EXPL_RATE     = EXPL_RATE_MAX
 EPSILON_DECAY = 0.995
 # ---------------------------------------------
@@ -98,8 +98,6 @@ def test_agent(env):
     avg_ep_rewards = np.mean(ep_rewards)
     print(f"Average test reward: {avg_ep_rewards:.2f}.")
     print(f"Testing completed!")
-
-    return ep_rewards, avg_ep_rewards
 
 # train the agent with Tabular Q-learning
 def q_learning(env):
@@ -170,7 +168,7 @@ def q_learning(env):
         ep_rewards.append(reward_sum)
         ep_steps.append(steps)
 
-        # calculate moving avg over the last 50 episodes
+        # calculate moving avg over the last 100 episodes
         avg_reward = np.mean(ep_rewards)
         avg_steps = round(np.mean(ep_steps))
         avg_ep_rewards.append(avg_reward)
@@ -188,4 +186,4 @@ def q_learning(env):
     env.close()
     print(f"Training completed in {training_duration:.2f} seconds!\n")
 
-    return avg_ep_rewards, avg_ep_steps
+    return avg_ep_rewards

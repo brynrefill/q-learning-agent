@@ -21,24 +21,24 @@ np.random.seed(42)
 torch.manual_seed(42)
 
 # HYPERPARAMETERS -----------------------------
-N_EPISODES      = 500
+N_EPISODES      = 500 # if is_det else 1000
 N_TEST_EPISODES = 5
-MAX_N_STEPS     = 200
+MAX_N_STEPS     = 200 # if is_det else 500
 
 # alpha / step size
-LEARNING_RATE = 0.001
+LEARNING_RATE = 0.001 # if is_det else 0.0005
 
 # gamma
-DISC_FACTOR = 0.9
+DISC_FACTOR = 0.9 # if is_det else 0.95
 
 # epsilon
 EXPL_RATE_MAX = 1.0
-EXPL_RATE_MIN = 0.01
+EXPL_RATE_MIN = 0.01 # if is_det else 0.05
 EXPL_RATE     = EXPL_RATE_MAX
 EPSILON_DECAY = 0.995
 
 # experience
-BUFFER_SIZE = 10000
+BUFFER_SIZE = 10000 # if is_det else 20000
 BATCH_SIZE  = 64
 replay_buffer = deque(maxlen=BUFFER_SIZE)
 # ---------------------------------------------
@@ -194,8 +194,6 @@ def test_agent(env):
     print(f"Average test reward: {avg_ep_rewards:.2f}.")
     print(f"Testing completed!")
 
-    return ep_rewards, avg_ep_rewards
-
 # train the agent with Deep Q-Network
 def q_learning(env):
     global EXPL_RATE
@@ -274,7 +272,7 @@ def q_learning(env):
         ep_rewards.append(reward_sum)
         ep_steps.append(steps)
 
-        # calculate moving avg over the last 50 episodes
+        # calculate moving avg over the last 100 episodes
         avg_reward = np.mean(ep_rewards)
         avg_steps = round(np.mean(ep_steps))
         avg_ep_rewards.append(avg_reward)
@@ -292,4 +290,4 @@ def q_learning(env):
     env.close()
     print(f"Training completed in {training_duration:.2f} seconds!\n")
 
-    return avg_ep_rewards, avg_ep_steps
+    return avg_ep_rewards

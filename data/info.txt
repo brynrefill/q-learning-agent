@@ -1,0 +1,8 @@
+The data correspond to graphs on:
+
+- TQL tested with 4 different ε-decay values (.993, .995, .997, .999)
+- DQN tested with 4 different ε-decay values (the same as above)
+- DQN tested with 4 different batch size values (16, 32, 64, 128)
+- comparison between TQL and DQN (ε-decay=.995 for both; batch_size=64 for DQN)
+
+all four in both the deterministic environment and in the non-deterministic one (is_slippery=True).
